@@ -1,12 +1,21 @@
 package main
 
 import (
+	"fmt"
+	"net"
+	apiTransactionsService "technology_development_center_test/api/transactions"
+	apiUserService "technology_development_center_test/api/user"
 	config "technology_development_center_test/config"
 	dbService "technology_development_center_test/internal/db"
 	envParse "technology_development_center_test/internal/env-parse"
+	grpcInterceptors "technology_development_center_test/internal/interceptor"
 	loggerService "technology_development_center_test/internal/logger"
+	transactionsService "technology_development_center_test/internal/transactions-service"
+	userService "technology_development_center_test/internal/user-service"
 
 	"github.com/rs/zerolog/log"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/reflection"
 )
 
 // defaults for -ldflags
@@ -25,6 +34,30 @@ func main() {
 
 	db := dbService.NewDB(logger).Gorm
 
-	_ = db
+	grpcServer := grpc.NewServer(grpcInterceptors.GrpcServerWithInterceptors(logger)...)
 
+	apiUserService.RegisterUserServiceServer(grpcServer, userService.NewUserService(db))
+	apiTransactionsService.RegisterTransactionsServiceServer(grpcServer, transactionsService.NewTransactionsService(db))
+
+	runService(serviceConfig, grpcServer)
+}
+
+func runService(serviceConfig config.Config, grpcServer *grpc.Server) {
+	if serviceConfig.GrpcReflectionEnabled {
+		reflection.Register(grpcServer)
+	}
+
+	listen, err := net.Listen(
+		"tcp4",
+		fmt.Sprintf("%s:%d", serviceConfig.GrpcServerHost, serviceConfig.GrpcServerPort),
+	)
+	if err != nil {
+		log.Panic().Err(err).Msg("")
+	}
+
+	log.Info().Msgf("gRPC listen: %s", listen.Addr().String())
+
+	if err = grpcServer.Serve(listen); err != nil {
+		log.Panic().Err(err).Msg("")
+	}
 }

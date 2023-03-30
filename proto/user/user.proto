@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package user_service;
+
+import "core/core.proto";
+
+option go_package = "technology_development_center_test/api/proto";
+
+service UserService {
+    rpc Get (UserInfo) returns (GetUsers);
+    rpc Create (core.Empty) returns (core.Uid);
+    rpc Delete (core.Uid) returns (core.Empty);
+}
+
+message GetUsers {
+    repeated UserInfo UsersInfo = 1;
+}
+
+message UserInfo {
+    optional string uid = 1;
+    optional core.Money money = 2;
+    optional int64 registered = 3;
+}

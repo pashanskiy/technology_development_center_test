@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+package transactions_service;
+
+import "core/core.proto";
+
+option go_package = "technology_development_center_test/api/proto";
+
+service TransactionsService {
+    rpc Get (TransactionInfo) returns (TransactionsInfo);
+    rpc CreateDeposit (CreateTransaction) returns (core.Uid);
+    rpc CreateWithdrawal (CreateTransaction) returns (core.Uid);
+    rpc Delete (core.Uid) returns (core.Empty);
+}
+
+message TransactionsInfo {
+    repeated TransactionInfo TransactionsInfo = 1;
+}
+
+message TransactionInfo {
+    optional string uid = 1;
+    optional string user_uid = 2;
+    optional core.Money money = 3;
+    optional TransactionStatus status = 4;
+    optional int64 created = 5;
+}
+
+message CreateTransaction {
+    core.Uid user_uid = 1;
+    core.Money money = 2;
+}
+
+enum TransactionStatus {
+	TRANSACTION_STATUS_UNSPECIFIED = 0;
+	TRANSACTION_STATUS_FAILED = 1;
+	TRANSACTION_STATUS_REJECTED = 2;
+	TRANSACTION_STATUS_SUCCESS = 3;
+	TRANSACTION_STATUS_PROCESSING = 4;
+    TRANSACTION_STATUS_CREATED = 5;
+}

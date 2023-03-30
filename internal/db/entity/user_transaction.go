@@ -9,10 +9,11 @@ import (
 	"gorm.io/gorm"
 )
 
-type UserWithdrawals struct {
-	UID *uuid.UUID `gorm:"column:uid; type:uuid; primaryKey"`
+type UserTransaction struct {
+	UID *uuid.UUID `gorm:"column:uid; type:uuid; primaryKey; default:uuid_generate_v4()"`
 
-	UserUID string          `gorm:"column:user_uid"`
+	UserUID *uuid.UUID      `gorm:"column:user_uid"`
+	Type    string          `gorm:"column:type"`
 	Money   decimal.Decimal `gorm:"column:money"`
 	Status  string          `gorm:"column:status"`
 
@@ -21,4 +22,4 @@ type UserWithdrawals struct {
 	DeletedAt gorm.DeletedAt `gorm:"column:deleted_at"`
 }
 
-func (UserWithdrawals) TableName() string { return "user_withdrawals" }
+func (UserTransaction) TableName() string { return "user_transactions" }

@@ -10,7 +10,7 @@ import (
 )
 
 type UserEntity struct {
-	UID *uuid.UUID `gorm:"column:uid; type:uuid; primaryKey"`
+	UID *uuid.UUID `gorm:"column:uid; type:uuid; primaryKey; default:uuid_generate_v4()"`
 
 	Money decimal.Decimal `gorm:"column:money"`
 
