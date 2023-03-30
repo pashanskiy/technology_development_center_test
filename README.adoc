@@ -1,0 +1,4 @@
+GRPC Transactions System Server
+---------------------
+
+Задачка от technology development center 
