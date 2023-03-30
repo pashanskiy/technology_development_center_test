@@ -39,6 +39,8 @@ func main() {
 	apiUserService.RegisterUserServiceServer(grpcServer, userService.NewUserService(db))
 	apiTransactionsService.RegisterTransactionsServiceServer(grpcServer, transactionsService.NewTransactionsService(db))
 
+	//scheduler
+
 	runService(serviceConfig, grpcServer)
 }
 
