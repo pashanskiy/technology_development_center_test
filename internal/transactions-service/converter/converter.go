@@ -1,25 +1,25 @@
 package converter
 
 import (
-	apiTransactionService "technology_development_center_test/api/transactions"
+	// apiTransactionService "technology_development_center_test/api/transactions"
 
 	"github.com/gofrs/uuid/v5"
 	"github.com/rs/zerolog"
 )
 
-func TransactionStatus2String(logger *zerolog.Logger, status apiTransactionService.TransactionStatus) string {
-	logger.Debug().Msgf("status: %s", status)
+// func TransactionStatus2String(logger *zerolog.Logger, status apiTransactionService.TransactionStatus) string {
+// 	logger.Debug().Msgf("status: %s", status)
 
-	if apiTransactionService.TransactionStatus_TRANSACTION_STATUS_UNSPECIFIED == status {
-		return ""
-	}
+// 	if apiTransactionService.TransactionStatus_TRANSACTION_STATUS_UNSPECIFIED == status {
+// 		return ""
+// 	}
 
-	result := status.String()[19:]
+// 	result := status.String()[19:]
 
-	logger.Debug().Msgf("result: %s", result)
+// 	logger.Debug().Msgf("result: %s", result)
 
-	return result
-}
+// 	return result
+// }
 
 // func String2TransactionsStatus(logger *zerolog.Logger, value string) apiTransactionService.TransactionStatus {
 // 	logger.Debug().Msgf("value: %s", value)
