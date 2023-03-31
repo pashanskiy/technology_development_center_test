@@ -12,7 +12,7 @@ import (
 	loggerService "technology_development_center_test/internal/logger"
 	transactionsService "technology_development_center_test/internal/transactions-service"
 	userService "technology_development_center_test/internal/user-service"
-
+	schedulerService "technology_development_center_test/internal/transactions-service/scheduler"
 	"github.com/rs/zerolog/log"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
@@ -39,7 +39,8 @@ func main() {
 	apiUserService.RegisterUserServiceServer(grpcServer, userService.NewUserService(db))
 	apiTransactionsService.RegisterTransactionsServiceServer(grpcServer, transactionsService.NewTransactionsService(db))
 
-	//scheduler
+	scheduler := schedulerService.NewTransactionSchedulerService(db, &logger)
+	scheduler.RunSchedule(logger)
 
 	runService(serviceConfig, grpcServer)
 }

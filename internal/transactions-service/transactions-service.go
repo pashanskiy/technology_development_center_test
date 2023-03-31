@@ -11,14 +11,6 @@ type TransactionsService struct {
 
 	db *gorm.DB
 }
-
-type TransactionType string
-
-const (
-	Deposit    TransactionType = "DEPOSIT"
-	Withdrawal TransactionType = "WITHDRAWAL"
-)
-
 func NewTransactionsService(db *gorm.DB) *TransactionsService {
 	return &TransactionsService{db: db}
 }
